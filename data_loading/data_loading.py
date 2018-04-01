@@ -3,6 +3,8 @@ import os
 import time
 import cPickle
 
+DEBUG = 0
+
 def load_train_data():
 
     s = time.time()
@@ -25,6 +27,7 @@ def load_train_data():
 
     end = time.time()
     print("Time taken to load data is {}.".format((end - s)))
-    train_df.head()
+    if DEBUG:
+        print(train_df.head())
 
     return train_df
