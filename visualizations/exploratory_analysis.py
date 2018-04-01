@@ -3,23 +3,23 @@ import matplotlib.pyplot as plt  # for plotting
 import time
 import numpy as np
 import pandas as pd
-from data_preprocessing.data_pre_process import modify_datetime
 from bokeh.palettes import Spectral4
 from bokeh.plotting import figure, show
 
 
 def visualize_data(train_df):
 
-    vis_lat_long(train_df)
-    vis_trip_duration(train_df)
-
+    # vis_trip_duration(train_df)
+    # vis_lat_long(train_df)
+    vis_kmean_lat_long(train_df)
     # vis_trip_duration_month(train_df)
     plt.show()
+
 
 def vis_trip_duration(train_df):
     start = time.time()
     sns.set(style="white", palette="muted", color_codes=True)
-    f, axes = plt.subplots( 1, 1, figsize=(11, 7), sharex=True,num='Trip Duration')
+    f, axes = plt.subplots(1, 1, figsize=(11, 7), sharex=True, num='Trip Duration')
     sns.despine(left=True)
     sns.distplot(np.log(train_df['trip_duration'].values + 1), axlabel='Log(trip_duration)', label='log(trip_duration)',
                  bins=50, color="r")
@@ -28,7 +28,6 @@ def vis_trip_duration(train_df):
     plt.tight_layout()
     end = time.time()
     print("Time taken to vis_trip_duration is {}.".format((end - start)))
-
 
 
 def vis_trip_duration_month(train_data):
@@ -54,14 +53,23 @@ def vis_trip_duration_month(train_data):
     train_data = temp
     print("Time Taken by vis_trip_duration_month is {}.".format(end - start))
 
-def vis_lat_long(df):
 
+def vis_lat_long(df):
     start = time.time()
     longitude = list(df.pickup_longitude) + list(df.dropoff_longitude)
     latitude = list(df.pickup_latitude) + list(df.dropoff_latitude)
-    plt.figure("pick up/drop points ",figsize=(10, 10))
+    plt.figure("pick up/drop points ", figsize=(10, 10))
     plt.plot(longitude, latitude, '.', alpha=0.4, markersize=0.05)
     # plt.show()
 
     end = time.time()
     print("Time Taken by vis_lat_long is {}.".format(end - start))
+
+def vis_kmean_lat_long(train_df):
+
+    plt.figure('Clusters of New York', figsize=(10, 10))
+    for label in train_df.label_pick.unique():
+        plt.plot(train_df.pickup_longitude[train_df.label_pick == label], train_df.pickup_latitude[train_df.label_pick == label], '.', alpha=0.3,
+                 markersize=0.3)
+
+    plt.title('Clusters of New York')
