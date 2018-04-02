@@ -2,6 +2,7 @@ import time
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
+from visualizations.exploratory_analysis import vis_kmean_lat_long
 
 
 def lat_long_bounds(train_df):
@@ -54,5 +55,6 @@ def lat_long_labeling(train_df):
 
     end = time.time()
     print("Time taken in k_means_computation is {}.".format(end - start))
+    # vis_kmean_lat_long(train_df,k_means_pick)
 
     return train_df
