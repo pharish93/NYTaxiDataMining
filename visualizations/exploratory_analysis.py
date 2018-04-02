@@ -8,7 +8,6 @@ from bokeh.plotting import figure, show
 
 
 def visualize_data(train_df):
-
     # vis_trip_duration(train_df)
     # vis_lat_long(train_df)
     vis_kmean_lat_long(train_df)
@@ -65,11 +64,17 @@ def vis_lat_long(df):
     end = time.time()
     print("Time Taken by vis_lat_long is {}.".format(end - start))
 
-def vis_kmean_lat_long(train_df):
 
-    plt.figure('Clusters of New York', figsize=(10, 10))
+def vis_kmean_lat_long(train_df, k_means_pick=None):
+    fig, ax = plt.subplots(num='Clusters of New York', figsize=(10, 10))
     for label in train_df.label_pick.unique():
-        plt.plot(train_df.pickup_longitude[train_df.label_pick == label], train_df.pickup_latitude[train_df.label_pick == label], '.', alpha=0.3,
+        plt.plot(train_df.pickup_longitude[train_df.label_pick == label],
+                 train_df.pickup_latitude[train_df.label_pick == label], '.', alpha=0.3,
                  markersize=0.3)
+        if k_means_pick:
+            ax.plot(k_means_pick.cluster_centers_[label, 0], k_means_pick.cluster_centers_[label, 1], 'o', color='r')
+            ax.annotate(label, (k_means_pick.cluster_centers_[label, 0], k_means_pick.cluster_centers_[label, 1]),
+                        color='b',
+                        fontsize=20)
 
     plt.title('Clusters of New York')

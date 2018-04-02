@@ -3,6 +3,8 @@ import time
 
 pd.options.mode.chained_assignment = None
 from lat_long_experiments import *
+from sub_sample_data import sub_sample_data
+from distance_experiments import add_distance_measures
 
 
 def data_preprocessing(train_df):
@@ -10,6 +12,10 @@ def data_preprocessing(train_df):
     train_df = extract_datetime(train_df)
     train_df = lat_long_bounds(train_df)
     train_df = lat_long_labeling(train_df)
+    train_df = add_distance_measures(train_df)
+    # For part 1
+    train_df = sub_sample_data(train_df)
+
     return train_df
 
 
@@ -19,9 +25,9 @@ def check_unique_id(train_df):
     start = time.time()
     print("Number of columns and rows and columns are {} and {} respectively.".format(train_data.shape[1],
                                                                                       train_data.shape[0]))
-    if train_data.id.nunique() == train_data.shape[0]:
-        print("Train ids are unique")
-    print("Number of Nulls - {}.".format(train_data.isnull().sum().sum()))
+    # if train_data.id.nunique() == train_data.shape[0]:
+    #     print("Train ids are unique")
+    # print("Number of Nulls - {}.".format(train_data.isnull().sum().sum()))
     train_data = train_data.dropna()
     end = time.time()
     print("Time taken to check_unique_id is {}.".format(end - start))
@@ -43,3 +49,4 @@ def extract_datetime(train_data):
     end = time.time()
     print("Time taken to modify datetime field is {}.".format(end - start))
     return train_data
+
