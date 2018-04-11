@@ -4,13 +4,21 @@ from data_preprocessing.data_pre_process import *
 from visualizations.exploratory_analysis import *
 from lrt.mle import *
 
-
 def main():
-
     print('New York Taxi Data Mining')
-    train_df = load_train_data()
-    train_df = data_preprocessing(train_df)
-    visualize_data(train_df)
+    s = time.time()
+    train_cache_file = './data/cache/pre_processed_train_df.pkl'
+    if os.path.exists(train_cache_file):
+        with open(train_cache_file, 'rb') as fid:
+            train_df = cPickle.load(fid)
+    else:
+        train_df = load_train_data()
+        train_df = data_preprocessing(train_df)
+        visualize_data(train_df)
+        with open(train_cache_file, 'wb') as fid:
+            cPickle.dump(train_df, fid, cPickle.HIGHEST_PROTOCOL)
+
+
     p_values = lrt_taxi_data(train_df)
     print(p_values)
 
