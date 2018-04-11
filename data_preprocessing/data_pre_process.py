@@ -15,7 +15,7 @@ def data_preprocessing(train_df):
     train_df = add_distance_measures(train_df)
     # For part 1
     train_df = sub_sample_data(train_df)
-
+    # print(train_df.head())
     return train_df
 
 

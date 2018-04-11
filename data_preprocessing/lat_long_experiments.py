@@ -55,6 +55,6 @@ def lat_long_labeling(train_df):
 
     end = time.time()
     print("Time taken in k_means_computation is {}.".format(end - start))
-    # vis_kmean_lat_long(train_df,k_means_pick)
+    vis_kmean_lat_long(train_df,k_means_pick)
 
     return train_df

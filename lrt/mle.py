@@ -16,7 +16,17 @@ import operator
 def likelihood_ratio(global_ll, region_ll, outside_ll):
     return(-2.0*(region_ll + outside_ll - global_ll))
 
+def lrt_pre_process(train_data):
+    lrt_cols = ['total_distance', 'total_travel_time', 'label_pick', 'label_drop', 'distance_haversine',
+                'trip_duration']
+    train_data = train_data[lrt_cols]
+
+    return train_data
 def lrt_taxi_data(train_data):
+
+    train_data = lrt_pre_process(train_data)
+
+
     #train_data = train_data.head(10000)
     #print(train_data.loc[train_data['label_pick'] == 2, 'trip_duration'])
     #train_data.loc[train_data['label_pick'] == 2, 'trip_duration'] = train_data.loc[train_data['label_pick'] == 2, 'trip_duration'] * 1000
@@ -24,7 +34,7 @@ def lrt_taxi_data(train_data):
     regions = sorted(train_data.label_pick.unique())
     p_values_all_regions = dict()
     lrt_values = dict()
-    print(train_data.shape)
+    # print(train_data.shape)
 
 
     y, X = patsy.dmatrices('trip_duration ~ total_distance + total_travel_time + distance_haversine', data=train_data,
