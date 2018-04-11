@@ -1,5 +1,6 @@
 import pandas as pd
 import time
+import numpy as np
 
 pd.options.mode.chained_assignment = None
 from lat_long_experiments import *
@@ -50,3 +51,11 @@ def extract_datetime(train_data):
     print("Time taken to modify datetime field is {}.".format(end - start))
     return train_data
 
+def remove_outliers(train_data,tripout = 2 ):
+    trip_durations = np.array(train_data['trip_duration'])
+    mean = np.mean(trip_durations, axis=0)
+    sd = np.std(trip_durations, axis=0)
+
+    final_list = [x for x in trip_durations if (x > mean - tripout * sd)]
+    final_list = [x for x in final_list if (x < mean + tripout * sd)]
+    return final_list
