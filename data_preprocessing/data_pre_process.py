@@ -3,16 +3,15 @@ import time
 import numpy as np
 
 pd.options.mode.chained_assignment = None
-from lat_long_experiments import *
-from sub_sample_data import sub_sample_data
+from lat_long_experiments import lat_long_modifications
 from distance_experiments import add_distance_measures
 
 
 def data_preprocessing(train_df):
+
     train_df = check_unique_id(train_df)
     train_df = extract_datetime(train_df)
-    train_df = lat_long_bounds(train_df)
-    train_df = lat_long_labeling(train_df)
+    train_df = lat_long_modifications(train_df)
     train_df = add_distance_measures(train_df)
     train_df = remove_outliers(train_df,3)
     # For part 1
