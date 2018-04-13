@@ -3,10 +3,12 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from visualizations.exploratory_analysis import vis_kmean_lat_long
-
+import matplotlib.pyplot as plt
 
 def lat_long_modifications(train_df):
-    train_df = lat_long_bounds(train_df)
+    xlim = [-74.03, -73.77]
+    ylim = [40.63, 40.85]
+    train_df = lat_long_bounds(train_df,xlim,ylim)
     train_df = lat_long_labeling(train_df)
     train_df = lat_long_remove_small_clusters(train_df)
     train_df = lat_long_reform_clusters(train_df)
@@ -14,12 +16,10 @@ def lat_long_modifications(train_df):
     return train_df
 
 
-def lat_long_bounds(train_df):
+def lat_long_bounds(train_df,xlim = (-74.25, -73.77) ,ylim = (-74.25, -73.77)):
     start = time.time()
-    xlim = [-74.03, -73.77]
-    ylim = [40.63, 40.85]
     # xlim = [-74.25, -73.77]
-    # ylim = [40.55, 40.95]
+    # ylim = [-74.25, -73.77]
     train_df = train_df[(train_df.pickup_longitude > xlim[0]) & (train_df.pickup_longitude < xlim[1])]
     train_df = train_df[(train_df.dropoff_longitude > xlim[0]) & (train_df.dropoff_longitude < xlim[1])]
     train_df = train_df[(train_df.pickup_latitude > ylim[0]) & (train_df.pickup_latitude < ylim[1])]
@@ -66,7 +66,6 @@ def lat_long_labeling(train_df):
 
     print("Time taken in k_means_computation is {}.".format(end - start))
     vis_kmean_lat_long(train_df, k_means_pick)
-    import matplotlib.pyplot as plt
     plt.savefig('before_removal_kmeans.png')
     plt.show()
 
@@ -119,7 +118,7 @@ def lat_long_reform_clusters(train_df):
 
     print("Time taken in kmeans recompute computation is {}.".format(end - start))
     vis_kmean_lat_long(train_df, k_means_pick)
-    import matplotlib.pyplot as plt
+
     plt.savefig('after_removal_kmeans.png')
     plt.show()
 
