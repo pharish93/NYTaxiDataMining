@@ -14,6 +14,7 @@ def data_preprocessing(train_df):
     train_df = lat_long_bounds(train_df)
     train_df = lat_long_labeling(train_df)
     train_df = add_distance_measures(train_df)
+    train_df = remove_outliers(train_df,3)
     # For part 1
     train_df = sub_sample_data(train_df)
     # print(train_df.head())
@@ -55,7 +56,11 @@ def remove_outliers(train_data,tripout = 2 ):
     trip_durations = np.array(train_data['trip_duration'])
     mean = np.mean(trip_durations, axis=0)
     sd = np.std(trip_durations, axis=0)
-
-    final_list = [x for x in trip_durations if (x > mean - tripout * sd)]
-    final_list = [x for x in final_list if (x < mean + tripout * sd)]
-    return final_list
+    before = len(train_data)
+    #final_list = [x for x in trip_durations if (x > mean - tripout * sd)]
+    #final_list = [x for x in final_list if (x < mean + tripout * sd)]
+    return_df = train_data.loc[train_data['trip_duration'] > mean - tripout*sd]
+    return_df = return_df.loc[return_df['trip_duration'] < mean+tripout*sd]
+    after = len(return_df)
+    print("Records eliminated in Outlier Removal {}.".format(before - after))
+    return return_df
