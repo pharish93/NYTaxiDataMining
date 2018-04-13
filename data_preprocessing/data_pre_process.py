@@ -10,12 +10,13 @@ from distance_experiments import add_distance_measures
 def data_preprocessing(train_df):
 
     train_df = check_unique_id(train_df)
+    train_df = remove_outliers(train_df,3)
+
     train_df = extract_datetime(train_df)
     train_df = lat_long_modifications(train_df)
     train_df = add_distance_measures(train_df)
-    train_df = remove_outliers(train_df,3)
-    # For part 1
-    train_df = sub_sample_data(train_df)
+
+
     # print(train_df.head())
     return train_df
 

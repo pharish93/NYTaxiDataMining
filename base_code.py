@@ -5,7 +5,8 @@ from visualizations.exploratory_analysis import visualize_data
 from data_preprocessing.sub_sample_data import *
 from lrt.mle import *
 
-#Model 1
+
+# Model 1
 def spatial_anomalies(train_df):
     start = time.time()
     print('Model 1 : Spatial Anomalies modeling start')
@@ -16,7 +17,8 @@ def spatial_anomalies(train_df):
     print("Time taken in Spatial Anomalies modeling is {}.".format(end - start))
     print('Model 1 : Spatial Anomalies modeling end')
 
-#Model 2
+
+# Model 2
 def temporal_anomalies(train_df):
     start = time.time()
     print('Model 2 : Temporal Anomalies modeling start')
@@ -26,6 +28,7 @@ def temporal_anomalies(train_df):
     end = time.time()
     print("Time taken in Temporal Anomalies modeling is {}.".format(end - start))
     print('Model 2 : Temporal Anomalies modeling end')
+
 
 def main():
     print('New York Taxi Data Mining')
@@ -41,13 +44,12 @@ def main():
         with open(train_cache_file, 'wb') as fid:
             cPickle.dump(train_df, fid, cPickle.HIGHEST_PROTOCOL)
 
-
-
     # visualize_data(train_df)
     # spatial_anomalies(train_df)
     temporal_anomalies(train_df)
 
     print('End of Project')
+
 
 if __name__ == '__main__':
     main()
