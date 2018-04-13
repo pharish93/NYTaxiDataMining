@@ -5,6 +5,15 @@ from sklearn.cluster import KMeans
 from visualizations.exploratory_analysis import vis_kmean_lat_long
 
 
+def lat_long_modifications(train_df):
+    train_df = lat_long_bounds(train_df)
+    train_df = lat_long_labeling(train_df)
+    train_df = lat_long_remove_small_clusters(train_df)
+    train_df = lat_long_reform_clusters(train_df)
+
+    return train_df
+
+
 def lat_long_bounds(train_df):
     start = time.time()
     xlim = [-74.03, -73.77]
@@ -54,7 +63,64 @@ def lat_long_labeling(train_df):
     train_df['label_drop'] = k_means_pick.predict(df_drop)
 
     end = time.time()
+
     print("Time taken in k_means_computation is {}.".format(end - start))
-    vis_kmean_lat_long(train_df,k_means_pick)
+    vis_kmean_lat_long(train_df, k_means_pick)
+    import matplotlib.pyplot as plt
+    plt.savefig('before_removal_kmeans.png')
+    plt.show()
+
+    return train_df
+
+
+def lat_long_remove_small_clusters(train_df):
+    regions = sorted(train_df.label_pick.unique())
+    max_elem_count = max(train_df.label_pick.value_counts())
+    for region in regions:
+        if train_df[train_df['label_pick'] == region].shape[0] < 0.1 * max_elem_count:
+            train_df = train_df[train_df['label_pick'] != region]
+
+    return train_df
+
+
+def lat_long_reform_clusters(train_df):
+    start = time.time()
+    df_pick = train_df[['pickup_longitude', 'pickup_latitude']]
+    df_drop = train_df[['dropoff_longitude', 'dropoff_latitude']]
+    k = 20
+    init = np.array([[-73.99164461 , 40.75943564],
+                    [-73.78450561  ,40.64556703],
+                    [-73.99144962,    40.73762034],
+                    [-73.86897935 , 40.77203725],
+                    [-73.95216681,    40.7809176],
+                    [-74.01021634 , 40.71170423],
+                    [-73.96786457,    40.76113638],
+                    [-73.98161075 , 40.74365185],
+                    [-73.94496886,    40.81278371],
+                    [-73.99319492 , 40.72199218],
+                    [-74.00338907,    40.74307957],
+                    [-73.96664798 , 40.79800915],
+                    [-73.99149785,    40.74948639],
+                    [-73.95879924 , 40.77089706],
+                    [-73.97609084,    40.78506861],
+                    [-73.97560068 , 40.75266796],
+                    [-73.98331581,    40.77275706],
+                    [-74.00313903 , 40.72949336],
+                    [-73.98431508,    40.72914079],
+                    [-73.98040424 , 40.7617903]])
+
+    k_means_pick = KMeans(n_clusters=k,  init=init, n_init=1)
+    k_means_pick.fit(df_pick)
+    clust_pick = k_means_pick.labels_
+    train_df['label_pick'] = clust_pick.tolist()
+    train_df['label_drop'] = k_means_pick.predict(df_drop)
+
+    end = time.time()
+
+    print("Time taken in kmeans recompute computation is {}.".format(end - start))
+    vis_kmean_lat_long(train_df, k_means_pick)
+    import matplotlib.pyplot as plt
+    plt.savefig('after_removal_kmeans.png')
+    plt.show()
 
     return train_df

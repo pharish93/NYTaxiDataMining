@@ -2,7 +2,7 @@ import pandas as pd
 import time
 
 
-def sub_sample_data(train_df):
+def model1_sub_sample_data(train_df):
     start = time.time()
     days = [1, 4]
     hours = [8, 17]
