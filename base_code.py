@@ -10,7 +10,7 @@ def spatial_anomalies(train_df):
     start = time.time()
     print('Model 1 : Spatial Anomalies modeling start')
     train_df = model1_sub_sample_data(train_df)
-    p_values = lrt_taxi_data(train_df)
+    p_values = lrt_taxi_data(train_df, type='spatial')
     print(p_values)
     end = time.time()
     print("Time taken in Spatial Anomalies modeling is {}.".format(end - start))
@@ -22,7 +22,8 @@ def temporal_anomalies(train_df):
     print('Model 2 : Temporal Anomalies modeling start')
 
     train_df = model2_sub_sample_data(train_df)
-
+    p_values = lrt_taxi_data(train_df,type = 'temporal')
+    print(p_values)
     end = time.time()
     print("Time taken in Temporal Anomalies modeling is {}.".format(end - start))
     print('Model 2 : Temporal Anomalies modeling end')
@@ -46,6 +47,7 @@ def main():
     # visualize_data(train_df)
     # spatial_anomalies(train_df)
     temporal_anomalies(train_df)
+
 
     print('End of Project')
 

@@ -3,12 +3,9 @@ from scipy.stats import chi2
 
 from matplotlib import pyplot as plt
 
-from sklearn.metrics.classification import accuracy_score, log_loss
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import RBF
 from scipy import stats
 import statsmodels.api as sm
-from statsmodels.base.model import GenericLikelihoodModel
+
 import pandas as pd
 import patsy
 import operator
@@ -16,29 +13,40 @@ import operator
 def likelihood_ratio(global_ll, region_ll, outside_ll):
     return(-2.0*(region_ll + outside_ll - global_ll))
 
-def lrt_pre_process(train_data):
+def lrt_spatial_pre_process(train_data):
     lrt_cols = ['total_distance', 'total_travel_time', 'label_pick', 'label_drop', 'distance_haversine',
-                'trip_duration']
+                'trip_duration', 'passenger_count']
     train_data = train_data[lrt_cols]
 
     return train_data
-def lrt_taxi_data(train_data):
 
-    train_data = lrt_pre_process(train_data)
+def lrt_temporal_pre_process(train_data):
+    lrt_cols = ['total_distance', 'total_travel_time', 'day_of_year', 'distance_haversine',
+                'trip_duration', 'passenger_count']
+    train_data = train_data[lrt_cols]
+
+    return train_data
+
+def lrt_taxi_data(train_data, type = "spatial"):
+
+    segments = sorted(train_data.label_pick.unique())
+    segment_label = 'label_pick'
+    if type == "spatial":
+        train_data = lrt_spatial_pre_process(train_data)
+
+    else:
+        train_data = lrt_temporal_pre_process(train_data)
+        segments = sorted(train_data.day_of_year.unique())
+        segment_label = 'day_of_year'
 
 
-    #train_data = train_data.head(10000)
-    #print(train_data.loc[train_data['label_pick'] == 2, 'trip_duration'])
-    #train_data.loc[train_data['label_pick'] == 2, 'trip_duration'] = train_data.loc[train_data['label_pick'] == 2, 'trip_duration'] * 1000
-
-    regions = sorted(train_data.label_pick.unique())
     p_values_all_regions = dict()
     lrt_values = dict()
-    # print(train_data.shape)
 
 
     y, X = patsy.dmatrices('trip_duration ~ total_distance + total_travel_time + distance_haversine', data=train_data,
                            return_type='dataframe')
+
     y = y.values
     X = X.values
 
@@ -46,16 +54,15 @@ def lrt_taxi_data(train_data):
     global_results = global_model.fit()
     global_ll = global_results.llf/len(y)
 
-    for region in regions:
-        #region_indices = (train_data['label_pick'] == region) | (train_data['label_drop'] == region)
-        #outside_indices = (train_data['label_pick'] != region) & (train_data['label_drop'] != region)
+    for segment in segments:
+        # region_indices = (train_data['label_pick'] == region) | (train_data['label_drop'] == region)
+        # outside_indices = (train_data['label_pick'] != region) & (train_data['label_drop'] != region)
 
-        region_indices = train_data['label_pick'] == region
-        outside_indices = train_data['label_pick'] != region
-        print(region, sum(region_indices), sum(outside_indices))
+        segment_indices = train_data[segment_label] == segment
+        outside_indices = train_data[segment_label] != segment
 
         y_R, X_R = patsy.dmatrices('trip_duration ~ total_distance + total_travel_time + distance_haversine',
-                               data=train_data.loc[region_indices, :], return_type='dataframe')
+                               data=train_data.loc[segment_indices, :], return_type='dataframe')
         y_R = y_R.values
         X_R = X_R.values
         y_O, X_O = patsy.dmatrices('trip_duration ~ total_distance + total_travel_time + distance_haversine',
@@ -69,17 +76,17 @@ def lrt_taxi_data(train_data):
         region_results = region_model.fit()
         outside_results = outside_model.fit()
 
-        region_ll = region_results.llf/sum(region_indices)
+
+
+        region_ll = region_results.llf/sum(segment_indices)
         outside_ll = outside_results.llf/sum(outside_indices)
 
         region_lrt = likelihood_ratio(global_ll, region_ll, outside_ll)
 
-        #print(region, region_lrt)
-        lrt_values[region] = [region_lrt, global_ll, region_ll, outside_ll]
-        # print(region_lrt)
+        lrt_values[segment] = [region_lrt, global_ll, region_ll, outside_ll]
         df = 7
         p = 1 - chi2.cdf(region_lrt, df)
-        p_values_all_regions[region] = p
+        p_values_all_regions[segment] = p
 
     lrt_sorted = sorted(lrt_values.items(), key=operator.itemgetter(1))
     for element in lrt_sorted:
