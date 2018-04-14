@@ -37,8 +37,6 @@ def lrt_taxi_data(train_data, type = "spatial"):
     else:
         train_data = lrt_temporal_pre_process(train_data)
         segments = sorted(train_data.day_of_year.unique())
-        print(segments[23])
-        #exit()
         segment_label = 'day_of_year'
 
 
