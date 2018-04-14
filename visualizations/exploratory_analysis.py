@@ -10,10 +10,10 @@ from bokeh.plotting import figure, show
 def visualize_data(train_df):
     # vis_trip_duration(train_df)
     # vis_lat_long(train_df)
-    vis_kmean_lat_long(train_df)
+    # vis_kmean_lat_long(train_df)
     # vis_trip_duration_month(train_df)
-    plt.show()
-
+    # plt.show()
+    return
 
 def vis_trip_duration(train_df):
     start = time.time()

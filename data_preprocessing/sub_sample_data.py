@@ -7,7 +7,7 @@ from lat_long_experiments import lat_long_bounds
 def model1_sub_sample_data(train_df):
     start = time.time()
     days = [1, 4]
-    hours = [8, 17]
+    hours = [16, 18]
 
     train_df = train_df[(train_df.day_of_week >= days[0]) & (train_df.day_of_week <= days[1])]
     train_df = train_df[(train_df.hour >= hours[0]) & (train_df.hour <= hours[1])]
@@ -25,13 +25,13 @@ def model2_sub_sample_data(train_df):
 
     # Bound on days and hours to remove seasonal nature od data
     days = [1, 4]
-    hours = [6, 23]
+    hours = [8, 23]
     train_df = train_df[(train_df.day_of_week >= days[0]) & (train_df.day_of_week <= days[1])]
     train_df = train_df[(train_df.hour >= hours[0]) & (train_df.hour <= hours[1])]
 
 
-    vis_kmean_lat_long(train_df)
-    plt.savefig('model2_kmeans.png')
-    plt.show()
+    #vis_kmean_lat_long(train_df)
+    #plt.savefig('model2_kmeans.png')
+    #plt.show()
 
     return train_df

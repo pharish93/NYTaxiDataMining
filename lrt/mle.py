@@ -37,6 +37,8 @@ def lrt_taxi_data(train_data, type = "spatial"):
     else:
         train_data = lrt_temporal_pre_process(train_data)
         segments = sorted(train_data.day_of_year.unique())
+        print(segments[23])
+        #exit()
         segment_label = 'day_of_year'
 
 
@@ -63,6 +65,7 @@ def lrt_taxi_data(train_data, type = "spatial"):
 
         y_R, X_R = patsy.dmatrices('trip_duration ~ total_distance + total_travel_time + distance_haversine',
                                data=train_data.loc[segment_indices, :], return_type='dataframe')
+
         y_R = y_R.values
         X_R = X_R.values
         y_O, X_O = patsy.dmatrices('trip_duration ~ total_distance + total_travel_time + distance_haversine',
@@ -84,11 +87,13 @@ def lrt_taxi_data(train_data, type = "spatial"):
         region_lrt = likelihood_ratio(global_ll, region_ll, outside_ll)
 
         lrt_values[segment] = [region_lrt, global_ll, region_ll, outside_ll]
-        df = 7
+        df = 3
         p = 1 - chi2.cdf(region_lrt, df)
         p_values_all_regions[segment] = p
+        #print(segment, 'num of samples:', sum(segment_indices))
 
     lrt_sorted = sorted(lrt_values.items(), key=operator.itemgetter(1))
     for element in lrt_sorted:
         print (element[0], '-->', element[1])
     return p_values_all_regions
+    plt.plot(segments, lrt_values[region_lrt])
