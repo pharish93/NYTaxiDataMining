@@ -10,7 +10,7 @@ from distance_experiments import add_distance_measures
 def data_preprocessing(train_df):
 
     train_df = check_unique_id(train_df)
-    train_df = remove_outliers(train_df,3)
+    train_df = remove_outliers(train_df,5)
 
     train_df = extract_datetime(train_df)
     train_df = lat_long_modifications(train_df)
@@ -59,6 +59,7 @@ def remove_outliers(train_data,tripout = 2 ):
     before = len(train_data)
     #final_list = [x for x in trip_durations if (x > mean - tripout * sd)]
     #final_list = [x for x in final_list if (x < mean + tripout * sd)]
+    train_data = train_data.loc[train_data['passenger_count'] != 0]
     return_df = train_data.loc[train_data['trip_duration'] > mean - tripout*sd]
     return_df = return_df.loc[return_df['trip_duration'] < mean+tripout*sd]
     after = len(return_df)
