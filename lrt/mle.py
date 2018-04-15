@@ -93,6 +93,8 @@ def lrt_taxi_data(train_data, type = "spatial"):
     lrt_sorted = sorted(lrt_values.items(), key=operator.itemgetter(1))
     for element in lrt_sorted:
         print (element[0], '-->', element[1])
-    #plt.plot(segments, lrt_values[region_lrt])
+    plt.scatter(segments, [i[0] for i in lrt_values.values()])
+    plt.xticks(np.arange(0, max(segments)))
+    plt.show()
     return p_values_all_regions
 
