@@ -14,7 +14,7 @@ def likelihood_ratio(global_ll, region_ll, outside_ll):
     return(-2.0*(region_ll + outside_ll - global_ll))
 
 def lrt_spatial_pre_process(train_data):
-    lrt_cols = ['total_distance', 'total_travel_time', 'label_pick', 'label_drop', 'distance_haversine',
+    lrt_cols = ['total_distance', 'total_travel_time', 'label_pick', 'distance_haversine',
                 'trip_duration', 'passenger_count']
     train_data = train_data[lrt_cols]
 
@@ -27,6 +27,16 @@ def lrt_temporal_pre_process(train_data):
 
     return train_data
 
+def lrt_spatial_temporal_pre_process(train_data):
+    lrt_cols = ['total_distance', 'total_travel_time', 'label_pick', 'distance_haversine',
+                'trip_duration', 'passenger_count', 'day_of_year']
+    train_data = train_data[lrt_cols]
+    train_data['day_of_year'] = train_data['day_of_year'].astype(str)
+    train_data['label_pick'] = train_data['label_pick'].astype(str)
+    train_data['label_pick_day_of_year'] = train_data[['label_pick', 'day_of_year']].apply(lambda x: ''.join(x), axis=1)
+
+    return train_data
+
 def lrt_taxi_data(train_data, type = "spatial"):
 
     segments = sorted(train_data.label_pick.unique())
@@ -34,11 +44,16 @@ def lrt_taxi_data(train_data, type = "spatial"):
     if type == "spatial":
         train_data = lrt_spatial_pre_process(train_data)
 
-    else:
+    elif type == "temporal":
         train_data = lrt_temporal_pre_process(train_data)
         segments = sorted(train_data.day_of_year.unique())
         segment_label = 'day_of_year'
 
+    else:
+        train_data = lrt_spatial_temporal_pre_process(train_data)
+        segments = sorted(train_data.label_pick_day_of_year.unique())
+        segment_label = 'label_pick_day_of_year'
+        print(segments)
 
     p_values_all_regions = dict()
     lrt_values = dict()
@@ -93,8 +108,8 @@ def lrt_taxi_data(train_data, type = "spatial"):
     lrt_sorted = sorted(lrt_values.items(), key=operator.itemgetter(1))
     for element in lrt_sorted:
         print (element[0], '-->', element[1])
-    plt.scatter(segments, [i[0] for i in lrt_values.values()])
-    plt.xticks(np.arange(0, max(segments)))
-    plt.show()
+    # plt.scatter(segments, [i[0] for i in lrt_values.values()])
+    # plt.xticks(np.arange(0, max(segments)))
+    # plt.show()
     return p_values_all_regions
 
