@@ -11,8 +11,8 @@ def spatial_anomalies(train_df):
     start = time.time()
     print('Model 1 : Spatial Anomalies modeling start')
     train_df = model1_sub_sample_data(train_df)
-    p_values = lrt_taxi_data(train_df, type='spatial')
-    print(p_values)
+    lrt_values = lrt_taxi_data(train_df, type='spatial')
+    print(lrt_values)
     end = time.time()
     print("Time taken in Spatial Anomalies modeling is {}.".format(end - start))
     print('Model 1 : Spatial Anomalies modeling end')
@@ -24,8 +24,8 @@ def temporal_anomalies(train_df):
     print('Model 2 : Temporal Anomalies modeling start')
 
     train_df = model2_sub_sample_data(train_df)
-    p_values = lrt_taxi_data(train_df,type = 'temporal')
-    print(p_values)
+    lrt_values = lrt_taxi_data(train_df,type = 'temporal')
+    print(lrt_values)
     end = time.time()
     print("Time taken in Temporal Anomalies modeling is {}.".format(end - start))
     print('Model 2 : Temporal Anomalies modeling end')
@@ -35,8 +35,8 @@ def spatial_temporal_anomalies(train_df):
     print('Model 3 : Spatial Temporal Anomalies modeling start')
 
     train_df = model2_sub_sample_data(train_df)
-    p_values = lrt_taxi_data(train_df, type='spatial_temporal')
-    print(p_values)
+    lrt_values = lrt_taxi_data(train_df, type='spatial_temporal')
+    print(lrt_values)
     end = time.time()
     print("Time taken in Spatial Temporal Anomalies modeling is {}.".format(end - start))
     print('Model 3 : Spatial Temporal Anomalies modeling end')
@@ -56,9 +56,9 @@ def main():
             cPickle.dump(train_df, fid, cPickle.HIGHEST_PROTOCOL)
 
     # visualize_data(train_df)
-    # spatial_anomalies(train_df)
-    # temporal_anomalies(train_df)
-    spatial_temporal_anomalies(train_df)
+    spatial_anomalies(train_df)
+    temporal_anomalies(train_df)
+    # spatial_temporal_anomalies(train_df)
 
 
     print('End of Project')
