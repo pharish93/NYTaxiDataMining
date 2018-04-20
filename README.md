@@ -21,7 +21,7 @@ All the downloaded files are to be placed at "./data" folder
 ## Code organisation and Running demo  
 The main code for the project is present in base_code.py, If you wish to see the demo of this project , you can run the file. 
 
-The code organised as follows 
+The code is organised as follows 
 * ./data          -> Data set used for the runing the code to be downloaded and placed here
 * ./data_loading  -> Contains code responsible for reading different input files
 * ./data_preprocessing -> Code for all pre processing steps taken including sub sampling 
@@ -38,7 +38,7 @@ Plese read through the report for detailed analysis and assumptions made for thi
 
 ## Appendix 
 ### Packages 
-For running core algorithm :- Numpy , Pandas , Scipy ,  , statsmodels.api , patsy 
-For visualizations :- Matplotlib, seabore, bokeh 
+* For running core algorithm :- Numpy , Pandas , Scipy ,  , statsmodels.api , patsy 
+* For visualizations :- Matplotlib, seabore, bokeh 
 
 
