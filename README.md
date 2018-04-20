@@ -39,6 +39,6 @@ Plese read through the report for detailed analysis and assumptions made for thi
 ## Appendix 
 ### Packages 
 * For running core algorithm :- Numpy , Pandas , Scipy ,  , statsmodels.api , patsy 
-* For visualizations :- Matplotlib, seabore, bokeh 
+* For visualizations :- Matplotlib, seaborn, bokeh 
 
 
