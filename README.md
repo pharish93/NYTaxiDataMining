@@ -22,25 +22,19 @@ All the downloaded files are to be placed at "./data" folder
 The main code for the project is present in base_code.py, If you wish to see the demo of this project , you can run the file. 
 
 The code organised as follows 
-./data -> Data set used for the runing the code to be downloaded and placed here
-
-./data_loading -> Contains code responsible for reading different input files
-
-./data_preprocessing -> Code for all pre processing steps taken including sub sampling 
-
-./lrt -> Main LRT algorithm, with switch case for 3 different modes experimented
-
-./visualizations -> Code for basic visualization plots for data exploration 
+* ./data          -> Data set used for the runing the code to be downloaded and placed here
+* ./data_loading  -> Contains code responsible for reading different input files
+* ./data_preprocessing -> Code for all pre processing steps taken including sub sampling 
+* ./lrt           -> Main LRT algorithm, with switch case for 3 different modes experimented
+* ./visualizations  -> Code for basic visualization plots for data exploration 
 
 ## Report 
 Plese read through the report for detailed analysis and assumptions made for this experimentation
 
 ## Authors 
-Harish Pullagurla ( hpullag@ncsu.edu ) 
-
-Hari Krishna Majety ( hmajety@ncsu.edu ) 
-
-Kenneth Tran ( kvtran2@ncsu.edu )
+* Harish Pullagurla ( hpullag@ncsu.edu ) 
+* Hari Krishna Majety ( hmajety@ncsu.edu ) 
+* Kenneth Tran ( kvtran2@ncsu.edu )
 
 ## Appendix 
 ### Packages 
