@@ -55,7 +55,7 @@ def main():
         with open(train_cache_file, 'wb') as fid:
             cPickle.dump(train_df, fid, cPickle.HIGHEST_PROTOCOL)
 
-    # visualize_data(train_df)
+    visualize_data(train_df)
     spatial_anomalies(train_df)
     temporal_anomalies(train_df)
     # spatial_temporal_anomalies(train_df)
