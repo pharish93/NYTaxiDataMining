@@ -105,11 +105,21 @@ def lrt_taxi_data(train_data, type = "spatial"):
         p_values_all_regions[segment] = p
         #print(segment, 'num of samples:', sum(segment_indices))
 
-    lrt_sorted = sorted(lrt_values.items(), key=operator.itemgetter(1))
+    lrt_sorted = sorted(lrt_values.items(), key=operator.itemgetter(1),reverse=True)
+    iter = 0
+    print("The top 3 anomalous points are:")
     for element in lrt_sorted:
-        print (element[0], '-->', element[1])
-    # plt.scatter(segments, [i[0] for i in lrt_values.values()])
-    # plt.xticks(np.arange(0, max(segments)))
-    # plt.show()
+        #print (element[0], '-->', element[1])
+        print(element[0])
+        iter+=1
+        if(iter>=3):
+            break
+    plt.scatter(segments, [i[0] for i in lrt_values.values()])
+    plt.xticks(range(0, max(segments),5),rotation = 'vertical')
+    #plt.xticks(np.arange(0, max(segments)))
+    plt.xlabel('Cluster Labels')
+    plt.ylabel('Likelihood Ratio')
+    plt.title('Likelihood Ratio of Data points')
+    plt.show()
     return p_values_all_regions
 
