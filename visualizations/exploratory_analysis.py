@@ -8,8 +8,8 @@ from bokeh.plotting import figure, show
 
 
 def visualize_data(train_df):
-    # vis_trip_duration(train_df)
-    # vis_lat_long(train_df)
+    vis_trip_duration(train_df)
+    vis_lat_long(train_df)
     vis_kmean_lat_long(train_df)
     # vis_trip_duration_month(train_df)
     plt.show()
@@ -47,7 +47,7 @@ def vis_trip_duration_month(train_data):
 
     p.legend.location = "top_left"
     p.legend.click_policy = "hide"
-    show(p)
+    # show(p)
     end = time.time()
     train_data = temp
     print("Time Taken by vis_trip_duration_month is {}.".format(end - start))
