@@ -13,7 +13,7 @@ If not you would be required to install the packages mention individually in the
 
 ### Data Set 
 Data used in this project is taken from a kaggle kernal. 
-It can be downloaded from "https://www.kaggle.com/oscarleo/new-york-city-taxi-with-osrm"  [ Last accessed on 4/20/2018 , report if link is broken]
+~~It can be downloaded from "https://www.kaggle.com/oscarleo/new-york-city-taxi-with-osrm"  [ Last accessed on 4/20/2018 , report if link is broken]~~
 
 All the downloaded files are to be placed at "./data" folder 
 "./data/cache" has been used store intermediate data dumps, you would need to clean it, everytime changes are made to the subsampling part.  
